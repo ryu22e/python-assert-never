@@ -16,7 +16,7 @@
 * Python Boot Camp、Shonan.pyなどコミュニティ活動もしています
 * 著書（共著）：『[Python実践レシピ](https://gihyo.jp/book/2022/978-4-297-12576-9)』
 
-### 【PR】『Python実戦レシピ』第2版が出ます！
+### 【PR】『Python実践レシピ』第2版が出ます！
 
 <https://amzn.asia/d/0jaaWbIX>
 
