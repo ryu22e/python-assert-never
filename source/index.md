@@ -202,7 +202,7 @@ def assert_never(arg: Never, /) -> Never:
 ### つまり、こういうこと
 
 ```{revealjs-code-block} python
-    :data-line-numbers: 8-12
+    :data-line-numbers: 8-14
 
     # （省略）
     def get_color_name_jp(color: Color) -> str:
@@ -212,9 +212,11 @@ def assert_never(arg: Never, /) -> Never:
             case Color.BLUE:
                 return "青"
             case _:
-                # 型チェッカーはここを通るケースがあることを検出する
-                # assert_never()関数の引数がNever型なので、
-                # 何を渡しても型チェックエラーになる
+                # 型チェッカーは引数の値を見てここを通るケースがあることを
+                # 検出し、関数の型定義と矛盾した呼び方になっていないかを見る。
+                # Never型は何を渡してもエラーになるので、必ずエラーになる。
+                # 「case Color.YELLOW:」を入れればここは呼ばれないので、
+                # 型チェッカーはassert_never()関数の型検証を行わない。
                 assert_never(color)
     # （省略）
 ```
