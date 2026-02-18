@@ -28,14 +28,14 @@
 
 ## `assert_never()`関数の話
 
-typingモジュールの`assert_never()`関数を使うと、if文やパターンマッチの条件指定漏れを型チェッカーで検出できて便利！という話をします。
+Python 3.11で追加されたtypingモジュールの`assert_never()`関数を使うと、
+if文やパターンマッチの条件指定漏れを型チェッカーで検出できて便利！という話をします。
 
 ### まず、こんな列挙型を定義する
 
 ```{revealjs-code-block} python
 
     """assert_never_example.py"""
-
     import enum
 
     class Color(enum.Enum):
@@ -50,6 +50,7 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
 
     # （省略）
     def get_color_name_jp(color: Color) -> str:
+        """引数の値に応じて日本語の色名を返す"""
         match color:
             case Color.RED:
                 return "赤"
@@ -66,6 +67,8 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
 
 ### assert_never_example.pyの実行結果
 
+「黄」が出力されない。
+
 ```{revealjs-code-block} bash
 
     % python assert_never_example.py
@@ -73,6 +76,11 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
     青
     Unknown
 ```
+
+### テストを書けば気付ける問題だけど……
+
+* テストケースは人間が考えるもの
+* うっかりテストケースを書き忘れることもある
 
 ### こんな時便利なのが`assert_never()`関数
 
@@ -95,6 +103,8 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
 ```
 
 ### 型チェッカーが条件指定漏れを検出してくれる
+
+型チェッカーが「引数が`Color.YELLOW`の場合に`assert_never()`関数が呼ばれるよ」と教えてくれる。
 
 ```{revealjs-code-block} bash
 
@@ -124,9 +134,23 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
     AssertionError: Expected code to be unreachable, but got: <Color.YELLOW: 2>
 ```
 
-### 条件指定漏れの検出って、「型チェック」なの？
+### Q. そもそも、条件指定漏れの検出って「型チェック」なの？
 
-という疑問は、次の説明を聞けば解消するはず。
+* A. はい、型チェックです
+* これを説明するため、`assert_never()`関数の仕組みについて見てみましょう
+
+### `assert_never()`関数のソースコード
+
+引数が`Never`型、というのがポイント。
+
+```{revealjs-code-block} python
+
+def assert_never(arg: Never, /) -> Never:
+    value = repr(arg)
+    if len(value) > _ASSERT_NEVER_REPR_MAX_LENGTH:
+        value = value[:_ASSERT_NEVER_REPR_MAX_LENGTH] + '...'
+    raise AssertionError(f"Expected code to be unreachable, but got: {value}")
+```
 
 ### `assert_never()`関数と同じ機能の関数を自作する
 
@@ -139,8 +163,8 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
     class UnreachableError(Exception):
         pass
 
-    # ↓引数の型をNeverにするのがポイント
-    def assert_unreachable(arg: Never) -> Never:
+    # ↓引数の型をNeverにする
+    def assert_unreachable(arg: Never, /) -> Never:
         raise UnreachableError(arg)
 ```
 
@@ -149,6 +173,7 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
 * `Never`型は「ボトム型」
 * ボトム型とは、型理論や数理論理学において値を持たない型のこと
 * ざっくり説明すると、「どんな値を入れても型チェックでエラーになる型」
+* どんな値も入れられる`Any`型の逆バージョンみたいなイメージ
 
 ### 以下はすべて型チェックでエラーになる
 
@@ -173,11 +198,25 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
     never_example.py:6: error: Incompatible types in assignment (expression has type "None", variable has type "Never")  [assignment]
 ```
 
-### つまり、どういうことか
+### つまり、こういうこと
 
-* `assert_never()`関数の引数の型は`Never`
-* つまり、`assert_never()`関数が呼ばれる条件がある場合、引数に指定した値は必ず型チェックエラーになる
-* 条件指定漏れ用の特別なチェックが走っているのではなく、あくまで型チェックを行っている
+```{revealjs-code-block} python
+    :data-line-numbers: 8-12
+
+    # （省略）
+    def get_color_name_jp(color: Color) -> str:
+        match color:
+            case Color.RED:
+                return "赤"
+            case Color.BLUE:
+                return "青"
+            case _:
+                # 型チェッカーはここを通るケースがあることを検出する
+                # assert_never()関数の引数がNever型なので、
+                # 何を渡しても型チェックエラーになる
+                assert_never(color)
+    # （省略）
+```
 
 ## 最後に
 
@@ -188,3 +227,10 @@ typingモジュールの`assert_never()`関数を使うと、if文やパター�
 * この機能は、`Never`型の特徴を利用した型チェックにより実現している
 
 ### ご清聴ありがとうございました
+
+<https://amzn.asia/d/0jaaWbIX>
+
+```{figure} _static/img/qrcode_www.amazon.co.jp.png
+:alt: Amazon URLのQRコード
+
+『Python実戦レシピ』第2版 3月16日発売、予約してね！
