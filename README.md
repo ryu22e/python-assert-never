@@ -1,4 +1,4 @@
-# 条件指定漏れをチェックできる便利関数assert_never()
+# 一歩進んだ型ヒントの活用（LT版）
 
 ## Requirements
 * Git

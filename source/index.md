@@ -1,4 +1,4 @@
-# 条件指定漏れをチェックできる便利関数`assert_never()`
+# 一歩進んだ型ヒントの活用（LT版）
 
 ```{raw} html
 
@@ -14,11 +14,12 @@
 * さくらインターネット株式会社所属
 * Python歴は14年くらい（主にDjango）
 * Python Boot Camp、Shonan.pyなどコミュニティ活動もしています
-* 著書（共著）：『[Python実践レシピ](https://gihyo.jp/book/2022/978-4-297-12576-9)』
+* 著書（共著）：
+  * 『[Python実践レシピ](https://gihyo.jp/book/2022/978-4-297-12576-9)』（2022年）
 
 ### 【PR】『Python実践レシピ』第2版が出ます！
 
-<https://amzn.asia/d/0jaaWbIX>
+* <https://amzn.asia/d/0jaaWbIX>
 
 ```{figure} _static/img/qrcode_www.amazon.co.jp.png
 :alt: Amazon URLのQRコード
@@ -29,7 +30,7 @@
 ## `assert_never()`関数の話
 
 Python 3.11で追加されたtypingモジュールの`assert_never()`関数を使うと、
-if文やパターンマッチの条件指定漏れを型チェッカーで検出できて便利！という話をします。
+if文やパターンマッチの条件指定漏れを型チェッカーで検出できて便利！という話をします（『Python実践レシピ』第2版の内容が元ネタです）。
 
 ### まず、こんな列挙型を定義する
 
@@ -201,7 +202,7 @@ def assert_never(arg: Never, /) -> Never:
 ### つまり、こういうこと
 
 ```{revealjs-code-block} python
-    :data-line-numbers: 8-12
+    :data-line-numbers: 8-14
 
     # （省略）
     def get_color_name_jp(color: Color) -> str:
@@ -211,9 +212,11 @@ def assert_never(arg: Never, /) -> Never:
             case Color.BLUE:
                 return "青"
             case _:
-                # 型チェッカーはここを通るケースがあることを検出する
-                # assert_never()関数の引数がNever型なので、
-                # 何を渡しても型チェックエラーになる
+                # 型チェッカーは引数の値を見てここを通るケースがあることを
+                # 検出し、関数の型定義と矛盾した呼び方になっていないかを見る。
+                # Never型は何を渡してもエラーになるので、必ずエラーになる。
+                # 「case Color.YELLOW:」を入れればここは呼ばれないので、
+                # 型チェッカーはassert_never()関数の型検証を行わない。
                 assert_never(color)
     # （省略）
 ```
