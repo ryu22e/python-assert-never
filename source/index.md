@@ -1,5 +1,9 @@
 # 一歩進んだ型ヒントの活用（LT版）
 
+2026/02/21 Ryuji Tsutsui
+
+PyCon mini Shizuoka 2026 LT
+
 ```{raw} html
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
