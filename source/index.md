@@ -213,6 +213,8 @@ def assert_never(arg: Never, /) -> Never:
 
 ### 条件指定漏れチェックの流れ
 
+`Never`型の特徴を利用して、条件指定漏れチェックを行っている。
+
 ```{revealjs-code-block} python
     :data-line-numbers: 8-14
 
