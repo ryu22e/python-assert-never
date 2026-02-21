@@ -21,6 +21,17 @@
 
 <https://amzn.asia/d/0jaaWbIX>
 
+```{figure} _static/img/amazon.png
+:alt: Amazonのページ
+
+3月16日発売！（QRコードは次のスライド）
+```
+
+```{revealjs-break}
+```
+
+<https://amzn.asia/d/0jaaWbIX>
+
 ```{figure} _static/img/qrcode_www.amazon.co.jp.png
 :alt: Amazon URLのQRコード
 
@@ -214,8 +225,7 @@ def assert_never(arg: Never, /) -> Never:
                 return "青"
             case _:
                 # (1)型チェッカーは引数がColor.YELLOWならここを通ることを
-                # 検出
-                # (2)引数に指定されているNever型は何を渡しても型エラーに
+                # 検出ph                # (2)引数に指定されているNever型は何を渡しても型エラーに
                 # なるので、必ず「assert_never()が呼ばれる=型エラー」になる
                 assert_never(color)
     # （省略）
