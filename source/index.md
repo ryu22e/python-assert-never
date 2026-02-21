@@ -13,7 +13,7 @@
 * Ryuji Tsutsui@ryu22e
 * さくらインターネット株式会社所属
 * Python歴は14年くらい（主にDjango）
-* Python Boot Camp、Shonan.pyなどコミュニティ活動もしています
+* 神奈川県横浜市在住
 * 著書（共著）：
   * 『[Python実践レシピ](https://gihyo.jp/book/2022/978-4-297-12576-9)』（2022年）
 
