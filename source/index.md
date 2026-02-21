@@ -19,12 +19,12 @@
 
 ### 【PR】『Python実践レシピ』第2版が出ます！
 
-* <https://amzn.asia/d/0jaaWbIX>
+<https://amzn.asia/d/0jaaWbIX>
 
 ```{figure} _static/img/qrcode_www.amazon.co.jp.png
 :alt: Amazon URLのQRコード
 
-3月16日発売！
+3月16日発売！（予約受付中）
 ```
 
 ## `assert_never()`関数の話
@@ -40,6 +40,7 @@ if文やパターンマッチの条件指定漏れを型チェッカーで検出
     import enum
 
     class Color(enum.Enum):
+        """色の種類"""
         RED = 0
         BLUE = 1
         YELLOW = 2
@@ -59,11 +60,11 @@ if文やパターンマッチの条件指定漏れを型チェッカーで検出
                 return "青"
             # Color.YELLOWを書き忘れている
             case _:
-                return "Unknown"
+                return "不明"
 
     print(get_color_name_jp(Color.RED))  # 「赤」
     print(get_color_name_jp(Color.BLUE))  # 「青」
-    print(get_color_name_jp(Color.YELLOW))  # 「黄」ではなく「Unknown」
+    print(get_color_name_jp(Color.YELLOW))  # 「黄」ではなく「不明」
 ```
 
 ### assert_never_example.pyの実行結果
@@ -75,7 +76,7 @@ if文やパターンマッチの条件指定漏れを型チェッカーで検出
     % python assert_never_example.py
     赤
     青
-    Unknown
+    不明
 ```
 
 ### テストを書けば気付ける問題だけど……
@@ -138,7 +139,7 @@ if文やパターンマッチの条件指定漏れを型チェッカーで検出
 ### Q. そもそも、条件指定漏れの検出って「型チェック」なの？
 
 * A. はい、型チェックです
-* これを説明するため、`assert_never()`関数の仕組みについて見てみましょう
+* これを説明するため、`assert_never()`関数の定義を見てみましょう
 
 ### `assert_never()`関数のソースコード
 
@@ -199,7 +200,7 @@ def assert_never(arg: Never, /) -> Never:
     never_example.py:6: error: Incompatible types in assignment (expression has type "None", variable has type "Never")  [assignment]
 ```
 
-### つまり、こういうこと
+### 条件指定漏れチェックの流れ
 
 ```{revealjs-code-block} python
     :data-line-numbers: 8-14
@@ -212,11 +213,10 @@ def assert_never(arg: Never, /) -> Never:
             case Color.BLUE:
                 return "青"
             case _:
-                # 型チェッカーは引数の値を見てここを通るケースがあることを
-                # 検出し、関数の型定義と矛盾した呼び方になっていないかを見る。
-                # Never型は何を渡してもエラーになるので、必ずエラーになる。
-                # 「case Color.YELLOW:」を入れればここは呼ばれないので、
-                # 型チェッカーはassert_never()関数の型検証を行わない。
+                # (1)型チェッカーは引数がColor.YELLOWならここを通ることを
+                # 検出
+                # (2)引数に指定されているNever型は何を渡しても型エラーに
+                # なるので、必ず「assert_never()が呼ばれる=型エラー」になる
                 assert_never(color)
     # （省略）
 ```
@@ -226,8 +226,7 @@ def assert_never(arg: Never, /) -> Never:
 ### まとめ
 
 * `assert_never()`関数は、条件指定漏れを検出してくれる便利関数
-* 引数を`Never`型にした関数を定義すれば、`assert_never()`と同じ機能の関数を作れる
-* この機能は、`Never`型の特徴を利用した型チェックにより実現している
+* この機能は、引数に指定された`Never`型の特徴を利用した型チェックにより実現している
 
 ### ご清聴ありがとうございました
 
