@@ -19,7 +19,7 @@
 
 ### 【PR】3月16日『Python実践レシピ』第2版が出ます！
 
-Python 3.14対応、書き下ろし（uv、Ruff、HTTPXなど）多数！
+最新のPython 3.14に対応、書き下ろし（uv、Ruff、HTTPXなど）多数！
 
 ```{figure} _static/img/amazon.png
 :alt: Amazonのページ
