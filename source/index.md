@@ -24,7 +24,7 @@
 ```{figure} _static/img/amazon.png
 :alt: Amazonのページ
 
-3月16日発売！（QRコードは次のスライド生）
+3月16日発売！（QRコードは次のスライド）
 ```
 
 ```{revealjs-break}
