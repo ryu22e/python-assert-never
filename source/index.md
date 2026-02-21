@@ -251,4 +251,4 @@ def assert_never(arg: Never, /) -> Never:
 ```{figure} _static/img/qrcode_www.amazon.co.jp.png
 :alt: Amazon URLのQRコード
 
-『Python実戦レシピ』第2版 3月16日発売、予約してね！
+『Python実践レシピ』第2版 3月16日発売、予約してね！
