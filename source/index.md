@@ -19,7 +19,7 @@
 
 ### 【PR】『Python実践レシピ』第2版が出ます！
 
-<https://amzn.asia/d/0jaaWbIX>
+Python 3.14対応、書き下ろし（uv、Ruff、HTTPXなど）多数！
 
 ```{figure} _static/img/amazon.png
 :alt: Amazonのページ
